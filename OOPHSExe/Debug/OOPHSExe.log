@@ -1,0 +1,22 @@
+﻿  OOPHSExeView.cpp
+  GeoMap.cpp
+e:\vs\vc\atlmfc\include\afxtempl.h(262): error C2248: “CObject::operator =”: 无法访问 private 成员(在“CObject”类中声明)
+          e:\vs\vc\atlmfc\include\afx.h(561) : 参见“CObject::operator =”的声明
+          e:\vs\vc\atlmfc\include\afx.h(535) : 参见“CObject”的声明
+          此诊断出现在编译器生成的函数“CArray<TYPE,ARG_TYPE> &CArray<TYPE,ARG_TYPE>::operator =(const CArray<TYPE,ARG_TYPE> &)”中
+          with
+          [
+              TYPE=CGeoLayer *,
+              ARG_TYPE=CGeoLayer *
+          ]
+  GeoLayer.cpp
+e:\vs\vc\atlmfc\include\afxtempl.h(262): error C2248: “CObject::operator =”: 无法访问 private 成员(在“CObject”类中声明)
+          e:\vs\vc\atlmfc\include\afx.h(561) : 参见“CObject::operator =”的声明
+          e:\vs\vc\atlmfc\include\afx.h(535) : 参见“CObject”的声明
+          此诊断出现在编译器生成的函数“CArray<TYPE,ARG_TYPE> &CArray<TYPE,ARG_TYPE>::operator =(const CArray<TYPE,ARG_TYPE> &)”中
+          with
+          [
+              TYPE=CGeoObject *,
+              ARG_TYPE=CGeoObject *
+          ]
+  正在生成代码...
