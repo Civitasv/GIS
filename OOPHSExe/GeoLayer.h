@@ -2,6 +2,8 @@
 #include "afxtempl.h" //模板类头文件
 #include "geopoint.h"
 #include "geopolyline.h"
+
+#include "geoobject.h"
 class CGeoLayer
 {
 private:
@@ -23,8 +25,8 @@ public:
 	virtual ~CGeoLayer(void);
 	//地理目标数组，与CGeoObjects建立关联
 	CArray<CGeoObject *,CGeoObject *> geoObjects;
-	CArray<CGeoPolyline *,CGeoPolyline *> geoPolyLines;
-	CArray<CGeoPoint *,CGeoPoint *> geoPoints;
+	//CArray<CGeoPolyline *,CGeoPolyline *> geoPolyLines;
+	//CArray<CGeoPoint *,CGeoPoint *> geoPoints;
 	void setRect(CRect crRect);
 	CRect getRect();
 
@@ -38,13 +40,14 @@ public:
 	CArray<CGeoObject *,CGeoObject *> getGeoObjects();*/
 
 	void addObjects(CGeoObject *obj);
-	void addPolylines(CGeoPolyline *poly);
-	void addPoints(CGeoPoint *point);
+	//void addPolylines(CGeoPolyline *poly);
+	//void addPoints(CGeoPoint *point);
 	void deleteObjectAt(int index);
 	void deleteObjectAll();
 
-	void draw(CDC *pDC);
-	void draw2(CDC *pDC);
+	//void draw(CDC *pDC);
+	//void draw2(CDC *pDC);
+	void draw3(CDC *pDC);
 
 };
 

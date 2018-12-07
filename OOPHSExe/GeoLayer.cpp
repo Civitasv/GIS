@@ -7,7 +7,9 @@ CGeoLayer::CGeoLayer(CString layerName,bool isVisible)
 
 }
 CGeoLayer::~CGeoLayer(){
-
+	int size = geoObjects.GetSize();
+	for(int i=0;i<size;i++)
+	  delete geoObjects.ElementAt(i);
 }
 CGeoLayer::CGeoLayer(const CGeoLayer &layer)
 {	
@@ -66,20 +68,19 @@ CArray<CGeoObject *,CGeoObject *> CGeoLayer::getGeoObjects(){
 void CGeoLayer::addObjects(CGeoObject *obj){
 	geoObjects.Add(obj);
 }
-
-void CGeoLayer::addPolylines(CGeoPolyline *poly){
+/*void CGeoLayer::addPolylines(CGeoPolyline *poly){
 	geoPolyLines.Add(poly);
 }
 void CGeoLayer::addPoints(CGeoPoint *point){
 	geoPoints.Add(point);
-}
+}*/
 void CGeoLayer::deleteObjectAt(int index){
 	geoObjects.RemoveAt(index);
 }
 void CGeoLayer::deleteObjectAll(){
 	geoObjects.RemoveAll();
 }
-void CGeoLayer::draw(CDC *pDC){
+/*void CGeoLayer::draw(CDC *pDC){
 	for(int i=0;i<geoPolyLines.GetSize();i++)
 		geoPolyLines.GetAt(i)->draw(pDC);
 }
@@ -87,4 +88,8 @@ void CGeoLayer::draw2(CDC *pDC){
 
 	for(int i=0;i<geoPoints.GetSize();i++)
 		geoPoints.GetAt(i)->draw(pDC);
+}*/
+void CGeoLayer::draw3(CDC *pDC){
+	for(int i=0;i<geoObjects.GetSize();i++)
+		geoObjects.GetAt(i)->draw(pDC);
 }

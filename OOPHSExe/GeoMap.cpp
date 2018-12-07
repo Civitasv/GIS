@@ -10,7 +10,9 @@ CGeoMap::CGeoMap(void):mapScale(mapScale)
 
 CGeoMap::~CGeoMap(void)
 {
-
+	int size = geoLayers.GetSize();
+	for(int i=0;i<size;i++)
+		delete geoLayers.ElementAt(i);
 }
 
 void CGeoMap::setName(CString mapName){
@@ -54,5 +56,5 @@ void CGeoMap::setLayerVisible(CString layerName,bool isVisible){
 }
 void CGeoMap::draw(CDC *pDC){
 	for(int i=0;i<geoLayers.GetSize();i++)
-		geoLayers.GetAt(i)->draw(pDC);
+		geoLayers.GetAt(i)->draw3(pDC);
 }

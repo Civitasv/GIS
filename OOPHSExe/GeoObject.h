@@ -21,7 +21,7 @@ public:
 	void setId(int id);
 	int getId();
 
-	void draw(CDC *pDC);
+	virtual void draw(CDC *pDC);
 	void setRect(CRect rect);
 	/*void setRect(int x,int y,int width,int height);*/
 	CRect getRect();

@@ -143,19 +143,21 @@ void COOPHSExeView::OnFileOpen()
 	//map1.addLayer(layer);
 
 	int x1,y1,x2,y2;
+	CGeoObject *obj = NULL;
 	while( !feof(fp))
 	{
-		CGeoPolyline *poly = new CGeoPolyline;
-		layer->addPolylines(poly);
-		//CPoint point;
+		//CGeoPolyline poly;
+		//layer->addPolylines(poly);
 		//CGeoPoint *point2 = new CGeoPoint;
-		
-		fscanf_s(fp,"%d%d%d%d",&x1,&y1,&x2,&y2);
-		poly->addPoint(CPoint(x1,y1));
-		poly->addPoint(CPoint(x2,y2));
-		/*fscanf_s(fp,"%d%d",&point.x,&point.y);
-		point2->setPoint(point);
-		layer->addPoints(point2);*/
+		//layer->addPoints(point2);
+		//fscanf_s(fp,"%d%d%d%d",&x1,&y1,&x2,&y2);
+		//poly.addPoint(CPoint(x1,y1));
+		//poly.addPoint(CPoint(x2,y2));
+		obj = new CGeoPoint;
+		layer->addObjects(obj);
+		fscanf_s(fp,"%d%d",&x1,&y1);
+		((CGeoPoint *)obj)->setPoint(CPoint(x1,y1));
+		//point2->setPoint(CPoint(x1,y1));
 	}
 	fclose(fp);
 	Invalidate();

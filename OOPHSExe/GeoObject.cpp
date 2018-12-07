@@ -49,10 +49,6 @@ int CGeoObject::getType(){
 	return this->type;
 }
 void CGeoObject::draw(CDC *pDC){
-	//判断几何类型
-	if(type==1){
-		//点
-		
-	}
+	
 }
 
