@@ -3,6 +3,7 @@
 //
 
 #include "stdafx.h"
+#include <afxpriv.h>
 // SHARED_HANDLERS 可以在实现预览、缩略图和搜索筛选器句柄的
 // ATL 项目中进行定义，并允许与该项目共享文档代码。
 #ifndef SHARED_HANDLERS
@@ -26,18 +27,22 @@ BEGIN_MESSAGE_MAP(COOPHSExeView, CView)
 	ON_COMMAND(ID_FILE_PRINT, &CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CView::OnFilePrintPreview)
+	ON_COMMAND(ID_FILE_OPEN, &COOPHSExeView::OnFileOpen)
 END_MESSAGE_MAP()
 
 // COOPHSExeView 构造/析构
 
 COOPHSExeView::COOPHSExeView()
 {
-	// TODO: 在此处添加构造代码
-
+	this->map = NULL;
+	
 }
 
 COOPHSExeView::~COOPHSExeView()
 {
+	if(map!=NULL){
+		delete map;
+	}
 }
 
 BOOL COOPHSExeView::PreCreateWindow(CREATESTRUCT& cs)
@@ -57,27 +62,10 @@ void COOPHSExeView::OnDraw(CDC* pDC)
 	if (!pDoc)
 		return;
 	// TODO: 在此处为本机数据添加绘制代码
-	/*CRect rect;
-	GetClientRect(&rect);
-	pDC->SetMapMode(MM_ANISOTROPIC);
-	pDC->SetWindowExt(rect.Width(),rect.Height());
-	pDC->SetViewportExt(rect.Width(),-rect.Height());
-	pDC->SetViewportOrg(rect.Width()/2,rect.Height()/2);
-	rect.OffsetRect(-rect.Width()/2,-rect.Height()/2);
-	CPoint ld,rt;//
- 
-	//绘制外部黑色椭圆
-	ld=CPoint(-200,-150),rt=CPoint(200,150);
-	CBrush NewBrush, *pOldBrush;
-	NewBrush.CreateSolidBrush(RGB(0,0,0));
-	pOldBrush=pDC->SelectObject(&NewBrush);
-	pDC->Ellipse(CRect(ld,rt));
-	pDC->SelectObject(pOldBrush);
-	NewBrush.DeleteObject();
- 
-    //绘制白色外部圆
-	ld=CPoint(-147,-147),rt=CPoint(147,147);
-	pDC->Ellipse(CRect(ld,rt));*/
+	if(map!=NULL){
+		map->draw(pDC);
+	}
+	//map2.draw(pDC);
 }
 
 
@@ -122,3 +110,53 @@ COOPHSExeDoc* COOPHSExeView::GetDocument() const // 非调试版本是内联的
 
 
 // COOPHSExeView 消息处理程序
+/*void COOPHSExeView::OnFileOpen(){
+	
+	}*/
+
+void COOPHSExeView::OnFileOpen()
+{
+	// TODO: 在此添加命令处理程序代码
+	CFileDialog dlg(true);
+	if( dlg.DoModal() != IDOK )
+		return;
+
+	CString fileName = dlg.GetPathName();
+	USES_CONVERSION;
+	//CString --> char *
+	char *filename = T2A(fileName);
+	FILE *fp;
+	fopen_s(&fp,filename,"r");
+	
+	if(fp==NULL)
+	{
+		MessageBox(CString("File Open Failed!"));
+		return;
+	}
+	
+	if(map!=NULL)
+		delete map;
+	map = new CGeoMap();
+	
+	CGeoLayer *layer = new CGeoLayer();
+	map->addLayer(layer);
+	//map1.addLayer(layer);
+
+	int x1,y1,x2,y2;
+	while( !feof(fp))
+	{
+		CGeoPolyline *poly = new CGeoPolyline;
+		layer->addPolylines(poly);
+		//CPoint point;
+		//CGeoPoint *point2 = new CGeoPoint;
+		
+		fscanf_s(fp,"%d%d%d%d",&x1,&y1,&x2,&y2);
+		poly->addPoint(CPoint(x1,y1));
+		poly->addPoint(CPoint(x2,y2));
+		/*fscanf_s(fp,"%d%d",&point.x,&point.y);
+		point2->setPoint(point);
+		layer->addPoints(point2);*/
+	}
+	fclose(fp);
+	Invalidate();
+}

@@ -7,22 +7,22 @@ private:
 	//地图名称
 	CString name;
 	//地图比例尺
-	int scale;
+	const int mapScale;
 	//地图范围
 	CRect crRect;
-	//地图包含图层
-	CArray<CGeoLayer *,CGeoLayer *> geoLayers;
+	
 public:
 	CGeoMap(void);
 	virtual ~CGeoMap(void);
-
+	
 	void setName(CString mapName);
 	CString getName();
+	//地图包含图层
+	CArray<CGeoLayer *,CGeoLayer *> geoLayers;
+	/*void setGeoLayers(CArray<CGeoLayer *,CGeoLayer *> geoLayers);
+	CArray<CGeoLayer *,CGeoLayer *> getGeoLayers();*/
 
-	void setGeoLayers(CArray<CGeoLayer *,CGeoLayer *> geoLayers);
-	CArray<CGeoLayer *,CGeoLayer *> getGeoLayers();
-
-	void setScale(int mapScale);
+	/*void setScale(int mapScale);*/
 	int getScale();
 
 	void setRect(CRect crRect);
@@ -30,7 +30,7 @@ public:
 
 	void addLayer(CGeoLayer *layer);
 	void deleteLayerAt(int index);
-	void deleteLayerAll(int index);
+	void deleteLayerAll();
 	void setLayerVisible(CString layerName,bool isVisible);
 	void draw(CDC *pDC);
 };

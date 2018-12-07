@@ -2,13 +2,15 @@
 #include "GeoMap.h"
 
 
-CGeoMap::CGeoMap(void)
+CGeoMap::CGeoMap(void):mapScale(mapScale)
 {
+
 }
 
 
 CGeoMap::~CGeoMap(void)
 {
+
 }
 
 void CGeoMap::setName(CString mapName){
@@ -18,18 +20,17 @@ CString CGeoMap::getName(){
 	return this->name;
 }
 
-void CGeoMap::setGeoLayers(CArray<CGeoLayer *,CGeoLayer *> geoLayers){
+
+/*void CGeoMap::setGeoLayers(CArray<CGeoLayer *,CGeoLayer *> geoLayers){
 	this->geoLayers = geoLayers;
 }
 CArray<CGeoLayer *,CGeoLayer *> CGeoMap::getGeoLayers(){
 	return this->geoLayers;
-}
+}*/
 
-void CGeoMap::setScale(int mapScale){
-	this->scale = scale;
-}
+
 int CGeoMap::getScale(){
-	return this->scale;
+	return this->mapScale;
 }
 
 void CGeoMap::setRect(CRect crRect){
@@ -40,17 +41,18 @@ CRect CGeoMap::getRect(){
 }
 
 void CGeoMap::addLayer(CGeoLayer *layer){
-
+	geoLayers.Add(layer);
 }
 void CGeoMap::deleteLayerAt(int index){
-
+	geoLayers.RemoveAt(index);
 }
-void CGeoMap::deleteLayerAll(int index){
-
+void CGeoMap::deleteLayerAll(){
+	geoLayers.RemoveAll();
 }
 void CGeoMap::setLayerVisible(CString layerName,bool isVisible){
 
 }
 void CGeoMap::draw(CDC *pDC){
-
+	for(int i=0;i<geoLayers.GetSize();i++)
+		geoLayers.GetAt(i)->draw(pDC);
 }

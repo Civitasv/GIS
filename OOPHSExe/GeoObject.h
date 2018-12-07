@@ -23,7 +23,10 @@ public:
 
 	void draw(CDC *pDC);
 	void setRect(CRect rect);
-	void setRect(int x,int y,int width,int height);
+	/*void setRect(int x,int y,int width,int height);*/
 	CRect getRect();
+	
+	void setType(int type);
+	int getType();
 };
 
