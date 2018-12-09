@@ -54,6 +54,9 @@
     <ClInclude Include="GeoPolyline.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="GeoPolygon.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="OOPHSExe.cpp">
@@ -86,6 +89,9 @@
     <ClCompile Include="GeoPolyline.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="GeoPolygon.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="OOPHSExe.rc">
@@ -98,6 +104,7 @@
     </None>
     <None Include="ClassDiagram.cd" />
     <None Include="ClassDiagram1.cd" />
+    <None Include="ClassDiagram2.cd" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\OOPHSExeDoc.ico">

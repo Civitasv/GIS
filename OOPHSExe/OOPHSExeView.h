@@ -32,8 +32,12 @@ protected:
 
 // 实现
 public:
+	void addPolylines();
+	void addPolygons();
+	void addAnnotations();
 	//引入地图实例对象
 	CGeoMap *map;
+	bool isMaploaded;
 	//CGeoMap map2;
 	virtual ~COOPHSExeView();
 #ifdef _DEBUG
@@ -47,6 +51,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnFileOpen();
+	virtual void OnPrepareDC(CDC* pDC, CPrintInfo* pInfo = NULL);
 };
 
 #ifndef _DEBUG  // OOPHSExeView.cpp 中的调试版本

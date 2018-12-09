@@ -101,10 +101,12 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GeoAnno.h" />
     <ClInclude Include="GeoLayer.h" />
     <ClInclude Include="GeoMap.h" />
     <ClInclude Include="GeoObject.h" />
     <ClInclude Include="GeoPoint.h" />
+    <ClInclude Include="GeoPolygon.h" />
     <ClInclude Include="GeoPolyline.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="OOPHSExe.h" />
@@ -115,10 +117,12 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="GeoAnno.cpp" />
     <ClCompile Include="GeoLayer.cpp" />
     <ClCompile Include="GeoMap.cpp" />
     <ClCompile Include="GeoObject.cpp" />
     <ClCompile Include="GeoPoint.cpp" />
+    <ClCompile Include="GeoPolygon.cpp" />
     <ClCompile Include="GeoPolyline.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="OOPHSExe.cpp" />

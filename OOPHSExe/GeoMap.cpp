@@ -4,7 +4,6 @@
 
 CGeoMap::CGeoMap(void):mapScale(mapScale)
 {
-
 }
 
 
@@ -38,9 +37,12 @@ int CGeoMap::getScale(){
 void CGeoMap::setRect(CRect crRect){
 	this->crRect = crRect;
 }
+
+
 CRect CGeoMap::getRect(){
 	return this->crRect;
 }
+
 
 void CGeoMap::addLayer(CGeoLayer *layer){
 	geoLayers.Add(layer);

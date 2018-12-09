@@ -14,7 +14,6 @@ private:
 public:
 	CGeoMap(void);
 	virtual ~CGeoMap(void);
-	
 	void setName(CString mapName);
 	CString getName();
 	//µØÍ¼°üº¬Í¼²ã
@@ -24,10 +23,8 @@ public:
 
 	/*void setScale(int mapScale);*/
 	int getScale();
-
 	void setRect(CRect crRect);
 	CRect getRect();
-
 	void addLayer(CGeoLayer *layer);
 	void deleteLayerAt(int index);
 	void deleteLayerAll();

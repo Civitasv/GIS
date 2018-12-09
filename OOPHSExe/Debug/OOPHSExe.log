@@ -1,7 +1,4 @@
-﻿  GeoMap.cpp
-  GeoLayer.cpp
-  正在生成代码...
-  正在跳过...(未检测到相关更改)
-  OOPHSExeView.cpp
-  OOPHSExe.cpp
+﻿  OOPHSExeView.cpp
+e:\cworkspace\oophsexe\oophsexe\oophsexeview.cpp(292): warning C4101: “y2”: 未引用的局部变量
+e:\cworkspace\oophsexe\oophsexe\oophsexeview.cpp(292): warning C4101: “x2”: 未引用的局部变量
   OOPHSExe.vcxproj -> E:\cworkspace\OOPHSExe\Debug\OOPHSExe.exe

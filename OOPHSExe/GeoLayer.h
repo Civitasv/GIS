@@ -2,8 +2,9 @@
 #include "afxtempl.h" //模板类头文件
 #include "geopoint.h"
 #include "geopolyline.h"
-
+#include "geopolygon.h"
 #include "geoobject.h"
+#include "geoanno.h"
 class CGeoLayer
 {
 private:
