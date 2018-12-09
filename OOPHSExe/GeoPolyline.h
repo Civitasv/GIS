@@ -3,12 +3,11 @@
 #include "afxtempl.h" //模板类头文件
 class CGeoPolyline : public CGeoObject  
 {
-private:
-	CArray<CPoint,CPoint> pts;
 public:
+	CArray<CPoint ,CPoint > pts;
 	CGeoPolyline();
 	virtual ~CGeoPolyline();
 	void addPoint(CPoint pt);
-	int getSize(void);
+	//int getSize(void);
 	void draw(CDC* pDC);
 };

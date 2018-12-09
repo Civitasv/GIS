@@ -35,11 +35,20 @@ CRect CGeoObject::getRect(){
 	return this->crRect;
 }
 
-void CGeoObject::setRect(int left,int right,int width,int height){
+/*void CGeoObject::setRect(int left,int right,int width,int height){
+	this->crRect.left = left;
+	this->crRect.right = left;
+}*/
 
+//ÉèÖÃÀàÐÍ
+void CGeoObject::setType(int type){
+	this->type = type;
 }
 
+int CGeoObject::getType(){
+	return this->type;
+}
 void CGeoObject::draw(CDC *pDC){
-	pDC->Ellipse(1,2,3,4);
+	
 }
 
