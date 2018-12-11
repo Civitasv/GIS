@@ -21,5 +21,5 @@ CPoint CGeoPoint::getPoint(){
 }
 
 void CGeoPoint::draw(CDC *pDC){
-	pDC->SetPixel(pt.x,pt.y,RGB(0,255,0));
+	pDC->SetPixel(pt.x,pt.y,RGB(255,0,0));
 }

@@ -32,9 +32,6 @@ protected:
 
 // 实现
 public:
-	void addPolylines();
-	void addPolygons();
-	void addAnnotations();
 	//引入地图实例对象
 	CGeoMap *map;
 	bool isMaploaded;

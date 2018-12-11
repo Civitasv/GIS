@@ -64,6 +64,11 @@ IMPLEMENT_DYNCREATE(COOPHSExeView, CView)
 		// TODO: 在此处为本机数据添加绘制代码
 		//this->OnPrepareDC(pDC);
 		if(map!=NULL){
+			int layerSize = map->geoLayers.GetSize();
+			for(int i=0;i<layerSize;i++){
+				int objectSize = (map->geoLayers).GetAt(i)->geoObjects.GetSize();
+			}
+
 			map->draw(pDC);
 		}
 		//map2.draw(pDC);
@@ -114,17 +119,6 @@ IMPLEMENT_DYNCREATE(COOPHSExeView, CView)
 	/*void COOPHSExeView::OnFileOpen(){
 
 	}*/
-	void addPolylines(){
-
-	}
-
-	void addPolygons(){
-
-	}
-
-	void addAnnotations(){
-
-	}
 	void COOPHSExeView::OnFileOpen()
 	{
 		// TODO: 在此添加命令处理程序代码
@@ -188,7 +182,7 @@ IMPLEMENT_DYNCREATE(COOPHSExeView, CView)
 					obj = new CGeoPolyline;
 					while(!(x==-99999&&y==-99999))
 					{
-						layer->addObjects(obj);
+						//layer->addObjects(obj);
 						((CGeoPolyline *)obj)->addPoint(CPoint(x,y));
 						fscanf_s(fp,"%d,%d",&x,&y);
 					}
@@ -200,7 +194,7 @@ IMPLEMENT_DYNCREATE(COOPHSExeView, CView)
 					obj = new CGeoPolygon;
 					while(!(x==-99999&&y==-99999))
 					{
-						layer->addObjects(obj);
+						//layer->addObjects(obj);
 						((CGeoPolygon *)obj)->addPoint(CPoint(x,y));
 						fscanf_s(fp,"%d,%d",&x,&y);
 					}
@@ -212,7 +206,7 @@ IMPLEMENT_DYNCREATE(COOPHSExeView, CView)
 					obj = new CGeoAnno;
 					while(!(x==-99999&&y==-99999))
 					{
-						layer->addObjects(obj);
+						//layer->addObjects(obj);
 						((CGeoAnno *)obj)->addPoint(CPoint(x,y));
 						fscanf_s(fp,"%d,%d",&x,&y);
 					}
@@ -246,6 +240,7 @@ IMPLEMENT_DYNCREATE(COOPHSExeView, CView)
 		pDC->SetViewportExt(size);  //设定视口尺寸
 		pDC->SetViewportOrg(pt); //设置视口中心为坐标系原点
 		size = map->getRect().Size();  //设定窗口对应尺寸
+		size.cx = size.cx*1.4;
 		//CRect rect(-932833,1937773,2109383,-572515);
 		pt =  map->getRect().CenterPoint(); //设置窗口中心为对应原点
 		//size = rect.Size();
@@ -255,6 +250,7 @@ IMPLEMENT_DYNCREATE(COOPHSExeView, CView)
 
 		CView::OnPrepareDC(pDC, pInfo);
 	}
+
 
 	/*void COOPHSExeView::OnFileOpen()
 	{
@@ -304,3 +300,5 @@ IMPLEMENT_DYNCREATE(COOPHSExeView, CView)
 	fclose(fp);
 	Invalidate();
 	}*/
+
+	
