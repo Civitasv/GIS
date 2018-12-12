@@ -93,3 +93,4 @@ void CGeoLayer::draw3(CDC *pDC){
 	for(int i=0;i<geoObjects.GetSize();i++)
 		geoObjects.GetAt(i)->draw(pDC);
 }
+

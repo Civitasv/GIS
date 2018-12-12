@@ -37,6 +37,7 @@ public:
 	bool isMaploaded;
 	//CGeoMap map2;
 	virtual ~COOPHSExeView();
+	void readOPT();
 #ifdef _DEBUG
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;

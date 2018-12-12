@@ -10,7 +10,7 @@ private:
 	const int mapScale;
 	//µØÍ¼·¶Î§
 	CRect crRect;
-	
+
 public:
 	CGeoMap(void);
 	virtual ~CGeoMap(void);
@@ -30,5 +30,6 @@ public:
 	void deleteLayerAll();
 	void setLayerVisible(CString layerName,bool isVisible);
 	void draw(CDC *pDC);
+	CGeoLayer* getLayerByName(CString layerName); 
 };
 

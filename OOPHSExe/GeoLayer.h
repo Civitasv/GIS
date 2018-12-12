@@ -46,6 +46,7 @@ public:
 	void deleteObjectAt(int index);
 	void deleteObjectAll();
 
+
 	//void draw(CDC *pDC);
 	//void draw2(CDC *pDC);
 	void draw3(CDC *pDC);

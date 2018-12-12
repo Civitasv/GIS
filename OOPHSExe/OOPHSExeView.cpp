@@ -17,7 +17,6 @@
 #define new DEBUG_NEW
 #endif
 
-
 // COOPHSExeView
 
 IMPLEMENT_DYNCREATE(COOPHSExeView, CView)
@@ -159,7 +158,11 @@ IMPLEMENT_DYNCREATE(COOPHSExeView, CView)
 			fscanf_s(fp,"%d",&layerSize);
 			//读取层名
 			char *layerName = new char[layerSize+1];
+			char tag;
+			fread( &tag , sizeof(char) , 1 , fp ) ;  
 			fread( layerName , sizeof(char) , layerSize+1 , fp ) ;  
+			layerName[layerSize] = '\0';
+			layer->setName(CString(layerName));
 			delete []layerName;
 			//读取目标数目
 			int number;
@@ -214,6 +217,7 @@ IMPLEMENT_DYNCREATE(COOPHSExeView, CView)
 				}
 			}
 		}
+		readOPT();
 		fclose(fp);
 		this->isMaploaded = TRUE;
 		Invalidate();
@@ -251,6 +255,76 @@ IMPLEMENT_DYNCREATE(COOPHSExeView, CView)
 		CView::OnPrepareDC(pDC, pInfo);
 	}
 
+	//读取颜色文件
+	void COOPHSExeView::readOPT(){
+		FILE *fp;
+		fopen_s(&fp,"C:\\Users\\dellyx\\Desktop\\大二上\\c++实习\\china1.opt","r");
+		/*--------------------读取层数---------------------*/
+		int layerNum;
+		fscanf_s(fp,"%d",&layerNum);
+		for(int i=0;i<layerNum;i++){
+			//读取层名
+			char name[20];
+			char tag;
+			int j = 0;
+			//跳过第一个\n
+			fread( &tag , sizeof(char) , 1 , fp );
+			fread( &tag , sizeof(char) , 1 , fp );
+			while(tag!='\n'){
+				name[j] = tag;
+				j++;
+				fread( &tag , sizeof(char) , 1 , fp );
+			}
+			char *layerName = new char[j];
+			
+			for(int k=0;k<j;k++){
+				layerName[k] = name[k];
+			}
+			layerName[j] = '\0';
+			char a = layerName[j];
+			//根据层名获得某一层
+			CGeoLayer* layer = map->getLayerByName(CString(layerName));
+			
+			//读取线型
+			int lineType;
+			fscanf_s(fp,"%d",&lineType);
+			//读取线宽
+			double lineWidth = 0;
+			if(lineType == 1){
+				fscanf_s(fp,"%lf",&lineWidth);
+			}
+			//读取线色
+			int r=0,g=0,b=0;
+			if(lineType==1&&lineWidth!=0){
+				fscanf_s(fp,"%d,%d,%d",&r,&g,&b);
+			}
+			//读取面型
+			int areaType;
+			fscanf_s(fp,"%d",&areaType);
+			int r2=0,g2=0,b2=0;
+			if(areaType == 1){
+				fscanf_s(fp,"%d,%d,%d",&r2,&g2,&b2);
+			}
+			int size = layer->geoObjects.GetSize();
+			for(int i=0;i<size;i++){
+				layer->geoObjects.GetAt(i)->lineType = lineType;
+				if(lineType == 1){
+					layer->geoObjects.GetAt(i)->lineType = lineWidth;
+					if(lineWidth!=0){
+						layer->geoObjects.GetAt(i)->r = r;
+						layer->geoObjects.GetAt(i)->g = g;
+						layer->geoObjects.GetAt(i)->b = b;
+					}
+				}
+				layer->geoObjects.GetAt(i)->areaType = areaType;
+				if(areaType==1){
+					layer->geoObjects.GetAt(i)->r2 = r2;
+					layer->geoObjects.GetAt(i)->g2 = g2;
+					layer->geoObjects.GetAt(i)->b2 = b2;
+				}
+			}
+		}
+	}
 
 	/*void COOPHSExeView::OnFileOpen()
 	{
@@ -301,4 +375,3 @@ IMPLEMENT_DYNCREATE(COOPHSExeView, CView)
 	Invalidate();
 	}*/
 
-	

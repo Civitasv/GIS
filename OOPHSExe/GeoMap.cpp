@@ -60,3 +60,12 @@ void CGeoMap::draw(CDC *pDC){
 	for(int i=0;i<geoLayers.GetSize();i++)
 		geoLayers.GetAt(i)->draw3(pDC);
 }
+
+CGeoLayer* CGeoMap::getLayerByName(CString layerName){
+	for(int i=0;i<geoLayers.GetSize();i++){
+		if(!layerName.CompareNoCase(geoLayers.GetAt(i)->getLayerName())){
+			return geoLayers.GetAt(i);
+		}
+	}
+	return NULL;
+}

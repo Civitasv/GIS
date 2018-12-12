@@ -12,6 +12,11 @@ protected:
 	//目标类型,1,2,3,4可以分别表示点、线、面、文字等
 	int type;
 public:
+	int lineType; //线型
+	int areaType; //面型
+	int lineWidth; //线宽
+	int r,g,b;	//线色
+	int r2,g2,b2;	//面填充
 	CGeoObject(void);
 	virtual ~CGeoObject(void);
 	

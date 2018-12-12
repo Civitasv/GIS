@@ -4,6 +4,15 @@
 
 CGeoObject::CGeoObject(void)
 {
+	this->lineWidth = 1;
+	this->lineType = 0;
+	this->r = 0;
+	this->b = 0;
+	this->g = 0;
+	this->areaType = 0;
+	this->r2 = 0;
+	this->b2 = 0;
+	this->g2 = 0;
 }
 
 
