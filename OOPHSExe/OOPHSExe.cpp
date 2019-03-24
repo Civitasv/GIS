@@ -155,6 +155,9 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnBnClickedOk();
+	afx_msg void OnBnClickedButton1();
+//	afx_msg void OnButton32779();
+//	afx_msg void OnButton32777();
 };
 
 CAboutDlg::CAboutDlg() : CDialogEx(CAboutDlg::IDD)
@@ -168,6 +171,8 @@ void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)
 	ON_BN_CLICKED(IDOK, &CAboutDlg::OnBnClickedOk)
+//	ON_COMMAND(ID_BUTTON32779, &CAboutDlg::OnButton32779)
+//	ON_COMMAND(ID_BUTTON32777, &CAboutDlg::OnButton32777)
 END_MESSAGE_MAP()
 
 // 用于运行对话框的应用程序命令
@@ -180,11 +185,17 @@ void COOPHSExeApp::OnAppAbout()
 // COOPHSExeApp 消息处理程序
 
 
-
-
-
 void CAboutDlg::OnBnClickedOk()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	CDialogEx::OnOK();
 }
+
+
+void CAboutDlg::OnBnClickedButton1()
+{
+	// TODO: 在此添加控件通知处理程序代码
+
+}
+
+

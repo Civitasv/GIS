@@ -6,9 +6,9 @@ class CGeoAnno :
 public:
 	CGeoAnno(void);
 	virtual ~CGeoAnno(void);
-	CArray<CPoint ,CPoint > pts;
-	void addPoint(CPoint pt);
+	CPoint point;
 	//int getSize(void);
 	void draw(CDC* pDC);
+	CString annoName;
 };
 

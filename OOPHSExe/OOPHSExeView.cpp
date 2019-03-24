@@ -9,10 +9,10 @@
 #ifndef SHARED_HANDLERS
 #include "OOPHSExe.h"
 #endif
-
+#include "string"
 #include "OOPHSExeDoc.h"
 #include "OOPHSExeView.h"
-
+#include "excel.h"
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -27,6 +27,21 @@ IMPLEMENT_DYNCREATE(COOPHSExeView, CView)
 		ON_COMMAND(ID_FILE_PRINT_DIRECT, &CView::OnFilePrint)
 		ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CView::OnFilePrintPreview)
 		ON_COMMAND(ID_FILE_OPEN, &COOPHSExeView::OnFileOpen)
+		//		ON_WM_MOUSEHWHEEL()
+		//ON_WM_MOUSEWHEEL()
+		//ON_WM_MOUSEMOVE()
+		//ON_WM_LBUTTONDBLCLK()
+		ON_WM_MOUSEMOVE()
+		ON_WM_LBUTTONUP()
+		ON_WM_LBUTTONDOWN()
+		ON_COMMAND(ID_BUTTON32777, &COOPHSExeView::OnButton32777)
+		ON_COMMAND(ID_BUTTON32779, &COOPHSExeView::OnButton32779)
+		ON_UPDATE_COMMAND_UI(ID_BUTTON32777, &COOPHSExeView::OnUpdateButton32777)
+		ON_UPDATE_COMMAND_UI(ID_BUTTON32779, &COOPHSExeView::OnUpdateButton32779)
+		ON_COMMAND(ID_BUTTON32780, &COOPHSExeView::OnButton32780)
+		ON_UPDATE_COMMAND_UI(ID_BUTTON32780, &COOPHSExeView::OnUpdateButton32780)
+		ON_COMMAND(ID_BUTTON32782, &COOPHSExeView::OnButton32782)
+		ON_UPDATE_COMMAND_UI(ID_BUTTON32782, &COOPHSExeView::OnUpdateButton32782)
 	END_MESSAGE_MAP()
 
 	// COOPHSExeView 构造/析构
@@ -35,6 +50,14 @@ IMPLEMENT_DYNCREATE(COOPHSExeView, CView)
 	{
 		this->map = NULL;
 		this->isMaploaded = FALSE;
+		this->ptOrg = NULL;
+		this->ptEnd = NULL;
+		isMousePressed = FALSE;
+		this->isZoomIn = FALSE;
+		this->isReturn = FALSE;
+		this->wcRect = NULL;
+		this->isSelecting = FALSE;
+		this->isClip = FALSE;
 	}
 
 	COOPHSExeView::~COOPHSExeView()
@@ -141,10 +164,100 @@ IMPLEMENT_DYNCREATE(COOPHSExeView, CView)
 		if(map!=NULL)
 			delete map;
 		map = new CGeoMap();
+		if(!fileName.CompareNoCase(CString("C:\\Users\\dellyx\\Desktop\\大二上\\c++实习\\china1.dat"))){
+			readChina(fp);
+		}
+		else if(!fileName.CompareNoCase(CString("C:\\Users\\dellyx\\Desktop\\大二上\\c++实习\\wuhan.txt"))){
+			readWuhan(fp);
+		}
+		else if(!fileName.CompareNoCase(CString("C:\\Users\\dellyx\\Desktop\\大二下\\计算机图形学\\chnFillTest.txt"))){
+			readCHN(fp);
+		}
+		else if(!fileName.CompareNoCase(CString("C:\\Users\\dellyx\\Desktop\\大二下\\计算机图形学\\clipData.txt"))){
+			readClip(fp);
+		}
+
+		Invalidate();
+	}
+	void COOPHSExeView::readClip(FILE *fp){
+		/*--------------------读取范围---------------------*/
+		int left,top,right,bottom;
+		fscanf_s(fp,"%d%d%d%d",&left,&top,&right,&bottom);
+		map->setRect(CRect(left,top,right,bottom));
+		this->wcRect = map->getRect();
+		CGeoLayer *layer = new CGeoLayer();
+		map->addLayer(layer);
+		int count,x,y;
+		while(!feof(fp)){
+			CGeoObject *obj = new CGeoPolyline();
+			layer->addObjects(obj);
+			fscanf_s(fp,"%d",&count);
+			for(int i=0;i<count;i++){
+				fscanf_s(fp,"%d%d",&x,&y);
+				((CGeoPolyline *)obj)->addPoint(CPoint(x,y));
+			}
+		}
+		fclose(fp);
+		this->isMaploaded = TRUE;
+	}
+
+	void COOPHSExeView::readCHN(FILE *fp){
+		CGeoLayer *layer = new CGeoLayer();
+		map->addLayer(layer);
+		int m,n,x,y,color;
+		while(!feof(fp)){
+			CGeoObject *obj = new CGeoPolygon();
+			obj->areaType = 1;
+			layer->addObjects(obj);
+			//读取多边形个数
+			fscanf_s(fp,"%d",&n);
+			for(int i=0;i<n;i++){
+				fscanf_s(fp,"%d",&m);
+				for(int j=0;j<m;j++){
+					fscanf_s(fp,"%d%d",&x,&y);
+					if(i==0)
+						((CGeoPolygon *)obj)->addPoint(CPoint(x,y));
+				}
+			}
+			// 读取内部点
+			fscanf_s(fp,"%d%d",&x,&y);
+			((CGeoPolygon *)obj)->seeds.Add(CPoint(x,y));
+			// 读取颜色
+			fscanf_s(fp,"%d",&color);
+			convertColor(color,obj);
+		}
+		fclose(fp);
+	}
+
+	void COOPHSExeView::convertColor(int color,CGeoObject *obj)//16进制颜色值
+	{
+		obj->r2 = byte((color >> 16) & 255);
+		obj->g2 = byte((color>> 8) & 255);
+		obj->b2 = byte((color >> 0) & 255);
+	}
+	void COOPHSExeView::readWuhan(FILE *fp){
+		CGeoLayer *layer = new CGeoLayer();
+		map->addLayer(layer);
+		//map1.addLayer(layer);
+		int x1,y1,x2,y2;
+		CGeoObject *obj = NULL;
+		while( !feof(fp))
+		{
+			CGeoObject *obj = new CGeoPolyline;
+			layer->addObjects(obj);
+			fscanf_s(fp,"%d%d%d%d",&x1,&y1,&x2,&y2);
+			((CGeoPolyline *)obj)->addPoint(CPoint(x1,y1));
+			((CGeoPolyline *)obj)->addPoint(CPoint(x2,y2));
+		}
+		fclose(fp);
+		this->isMaploaded = FALSE;
+	}
+	void COOPHSExeView::readChina(FILE *fp){
 		/*--------------------读取范围---------------------*/
 		int left,top,right,bottom;
 		fscanf_s(fp,"%d,%d%d,%d",&left,&top,&right,&bottom);
 		map->setRect(CRect(left,top,right,bottom));
+		this->wcRect = map->getRect();
 		/*-------------------------------------------------*/
 		/*--------------------读取层数---------------------*/
 		int layerNum;
@@ -190,6 +303,7 @@ IMPLEMENT_DYNCREATE(COOPHSExeView, CView)
 						fscanf_s(fp,"%d,%d",&x,&y);
 					}
 					layer->addObjects(obj);
+
 				}else if(type==2){
 					//每一个面上的点
 					int x,y;
@@ -202,28 +316,15 @@ IMPLEMENT_DYNCREATE(COOPHSExeView, CView)
 						fscanf_s(fp,"%d,%d",&x,&y);
 					}
 					layer->addObjects(obj);
-				}else if(type==4){
-					//每一个注记的点
-					int x,y;
-					fscanf_s(fp,"%d,%d",&x,&y);
-					obj = new CGeoAnno;
-					while(!(x==-99999&&y==-99999))
-					{
-						//layer->addObjects(obj);
-						((CGeoAnno *)obj)->addPoint(CPoint(x,y));
-						fscanf_s(fp,"%d,%d",&x,&y);
-					}
-					layer->addObjects(obj);
 				}
 			}
 		}
+
 		readOPT();
+		readAnno();
 		fclose(fp);
 		this->isMaploaded = TRUE;
-		Invalidate();
 	}
-
-
 	void COOPHSExeView::OnPrepareDC(CDC* pDC, CPrintInfo* pInfo)
 	{
 		// TODO: 在此添加专用代码和/或调用基类
@@ -232,26 +333,28 @@ IMPLEMENT_DYNCREATE(COOPHSExeView, CView)
 
 		if( !this->isMaploaded ) 
 			return;
-		CSize size; 
+		CSize windowsize; 
+		CSize logicsize;
 		CPoint pt;	
 		CRect rectD;
 
 		this->GetClientRect(&rectD);//取得客户区矩形区域大小
-		size = rectD.Size();
+		windowsize = rectD.Size();
 		pt = rectD.CenterPoint();//取得客户区矩形区域中心点坐标
 
-		pDC->SetMapMode(MM_ANISOTROPIC); //设置指定设备环境的映射方式
-		pDC->SetViewportExt(size);  //设定视口尺寸
+		pDC->SetMapMode(MM_ISOTROPIC); //设置指定设备环境的映射方式
+		pDC->SetViewportExt(windowsize);  //设定视口尺寸
 		pDC->SetViewportOrg(pt); //设置视口中心为坐标系原点
-		size = map->getRect().Size();  //设定窗口对应尺寸
-		size.cx = size.cx*1.4;
+
+		logicsize = wcRect.Size();  //设定窗口对应尺寸
+		double ratio = -windowsize.cx*1.0/windowsize.cy;
+		logicsize.cx = logicsize.cy*ratio;
 		//CRect rect(-932833,1937773,2109383,-572515);
-		pt =  map->getRect().CenterPoint(); //设置窗口中心为对应原点
+		pt = wcRect.CenterPoint(); //设置窗口中心为对应原点
 		//size = rect.Size();
 		//pt = rect.CenterPoint();
-		pDC->SetWindowExt(size);   //设置窗口长宽
+		pDC->SetWindowExt(logicsize);   //设置窗口长宽
 		pDC->SetWindowOrg(pt);	//设置窗口原点
-
 		CView::OnPrepareDC(pDC, pInfo);
 	}
 
@@ -276,7 +379,7 @@ IMPLEMENT_DYNCREATE(COOPHSExeView, CView)
 				fread( &tag , sizeof(char) , 1 , fp );
 			}
 			char *layerName = new char[j];
-			
+
 			for(int k=0;k<j;k++){
 				layerName[k] = name[k];
 			}
@@ -284,7 +387,6 @@ IMPLEMENT_DYNCREATE(COOPHSExeView, CView)
 			char a = layerName[j];
 			//根据层名获得某一层
 			CGeoLayer* layer = map->getLayerByName(CString(layerName));
-			
 			//读取线型
 			int lineType;
 			fscanf_s(fp,"%d",&lineType);
@@ -325,53 +427,188 @@ IMPLEMENT_DYNCREATE(COOPHSExeView, CView)
 			}
 		}
 	}
+	void COOPHSExeView::readAnno(){
+		CString Infilepath = CString("C:\\Users\\dellyx\\Desktop\\大二上\\c++实习\\chnCity.xls");
+		std::string path;
+		path = CT2A(Infilepath);
+		//char* path = const_cast<char*>(line1.c_str()); //sting 转 char*
+		Excel excl;
+		bool bInit = excl.initExcel();
 
-	/*void COOPHSExeView::OnFileOpen()
-	{
-	// TODO: 在此添加命令处理程序代码
-	CFileDialog dlg(true);
-	if( dlg.DoModal() != IDOK )
-	return;
+		//打开excel文件
+		if (!excl.open(path.c_str()))
+		{
+			AfxMessageBox(_T("excel文件打开出错!"));
+		}
 
-	CString fileName = dlg.GetPathName();
-	USES_CONVERSION;
-	//CString --> char *
-	char *filename = T2A(fileName);
-	FILE *fp;
-	fopen_s(&fp,filename,"r");
+		CString strSheetName = excl.getSheetName(1);//获取第一个sheet名  
+		bool bLoad = excl.loadSheet(strSheetName);//装载sheet  
+		int nRow = excl.getRowCount();//获取sheet中行数  
+		int nCol = excl.getColumnCount();//获取sheet中列数  
+		CString cell;
+		std::string cells;
+		CGeoObject *obj = NULL;
+		CGeoLayer *layer = new CGeoLayer();
+		map->addLayer(layer);
+		for (int i = 2; i <= nRow; ++i)
+		{
+			obj = new CGeoAnno;
+			for(int j = 1;j<=nCol;++j){
 
-	if(fp==NULL)
-	{
-	MessageBox(CString("File Open Failed!"));
-	return;
+				cell = excl.getCellString(i, j);  ////获取一个单元格数据
+				// cells = CT2A(cell);      //将获取的单元格转换为string类型数据
+				if(j == 1)
+					((CGeoAnno *)obj) ->annoName = cell;
+				else if(j == 2)
+					((CGeoAnno *)obj) ->point.x = _ttoi(cell);
+				else if(j == 3)
+					((CGeoAnno *)obj) ->point.y = _ttoi(cell);
+			}
+			layer->addObjects(obj);
+		}
 	}
 
-	if(map!=NULL)
-	delete map;
-	map = new CGeoMap();
 
-	CGeoLayer *layer = new CGeoLayer();
-	map->addLayer(layer);
-	//map1.addLayer(layer);
-
-	int x1,y1,x2,y2;
-	CGeoObject *obj = NULL;
-	while( !feof(fp))
+	void COOPHSExeView::OnMouseMove(UINT nFlags, CPoint point)
 	{
-	//CGeoPolyline poly;
-	//layer->addPolylines(poly);
-	//CGeoPoint *point2 = new CGeoPoint;
-	//layer->addPoints(point2);
-	//fscanf_s(fp,"%d%d%d%d",&x1,&y1,&x2,&y2);
-	//poly.addPoint(CPoint(x1,y1));
-	//poly.addPoint(CPoint(x2,y2));
-	obj = new CGeoPoint;
-	layer->addObjects(obj);
-	fscanf_s(fp,"%d%d",&x1,&y1);
-	((CGeoPoint *)obj)->setPoint(CPoint(x1,y1));
-	//point2->setPoint(CPoint(x1,y1));
-	}
-	fclose(fp);
-	Invalidate();
-	}*/
+		if(isZoomIn == FALSE&&isClip==FALSE){
+			return;
+		}
+		// TODO: 在此添加消息处理程序代码和/或调用默认值
+		if(!this->isMousePressed){
+			return;
+		}
+		CDC *pDC  = GetDC();
+		pDC->SetROP2(R2_NOTXORPEN);
+		pDC->Rectangle(CRect(ptOrg,ptEnd));
+		ptEnd = point;
+		pDC->Rectangle(CRect(ptOrg,ptEnd));
 
+		CView::OnMouseMove(nFlags, point);
+	}
+
+
+	void COOPHSExeView::OnLButtonUp(UINT nFlags, CPoint point)
+	{
+		if(isZoomIn == TRUE){
+			this->isMousePressed = FALSE;
+			// TODO: 在此添加消息处理程序代码和/或调用默认值
+			CDC *dc = this->GetDC();
+			OnPrepareDC(dc);
+			this->ptEnd = point;
+			if(ptEnd.x == ptOrg.x&&ptEnd.y==ptOrg.y){
+				return;
+			}
+			dc->DPtoLP(&ptOrg);
+			dc->DPtoLP(&ptEnd);
+
+			if(ptOrg.y<ptEnd.y){
+				int x = ptOrg.y;
+				ptOrg.y = ptEnd.y;
+				ptEnd.y = x;
+			}
+			this->wcRect = CRect(ptOrg,ptEnd);
+			dc->Rectangle(CRect(ptOrg,ptEnd));
+			Invalidate();
+			CView::OnLButtonUp(nFlags, point);
+		}
+		else if(isClip == TRUE)
+		{
+			this->isMousePressed = FALSE;
+
+			// TODO: 在此添加消息处理程序代码和/或调用默认值
+			CDC *dc = this->GetDC();
+			OnPrepareDC(dc);
+			this->ptEnd = point;
+			if(ptEnd.x == ptOrg.x&&ptEnd.y==ptOrg.y){
+				return;
+			}
+			dc->DPtoLP(&ptOrg);
+			dc->DPtoLP(&ptEnd);
+			CPoint downPoint = ptOrg;
+			CPoint upPoint = ptEnd;
+			int xmax = downPoint.x>upPoint.x?downPoint.x:upPoint.x;
+			int ymax = downPoint.y>upPoint.y?downPoint.y:upPoint.y;
+			int xmin = downPoint.x<upPoint.x?downPoint.x:upPoint.x;
+			int ymin = downPoint.y<upPoint.y?downPoint.y:upPoint.y;
+			CRect rect(xmin,ymax,xmax,ymin);;
+			this->map->clipRect = rect;
+			this->map->clipMap(rect);
+			dc->Rectangle(rect);
+			Invalidate();
+			CView::OnLButtonUp(nFlags, point);
+		}
+	}
+	void COOPHSExeView::OnLButtonDown(UINT nFlags, CPoint point)
+	{
+		if(isZoomIn == TRUE||isClip==TRUE){
+			this->isMousePressed = TRUE;
+			// TODO: 在此添加消息处理程序代码和/或调用默认值
+			this->ptEnd = this->ptOrg = point;
+			CView::OnLButtonDown(nFlags, point);
+		}
+	}
+
+
+	void COOPHSExeView::OnButton32777()
+	{
+		// TODO: 在此添加命令处理程序代码
+		if(this->isZoomIn == TRUE){
+			this->isZoomIn = FALSE;
+		}else{
+			this->isZoomIn = TRUE;
+		}
+	}
+
+
+	void COOPHSExeView::OnButton32779()
+	{
+		// TODO: 在此添加命令处理程序代码
+		this->wcRect = map->getRect();
+		Invalidate();
+	}
+
+
+	void COOPHSExeView::OnUpdateButton32777(CCmdUI *pCmdUI)
+	{
+		// TODO: 在此添加命令更新用户界面处理程序代码
+		pCmdUI->SetCheck(isZoomIn == TRUE);
+	}
+
+
+	void COOPHSExeView::OnUpdateButton32779(CCmdUI *pCmdUI)
+	{
+		pCmdUI->SetCheck(isReturn == TRUE);
+	}
+
+
+	void COOPHSExeView::OnButton32780()
+	{
+
+	}
+
+
+	void COOPHSExeView::OnUpdateButton32780(CCmdUI *pCmdUI)
+	{
+		pCmdUI->SetCheck(isSelecting == TRUE);
+	}
+
+
+	void COOPHSExeView::OnButton32782()
+	{
+		// TODO: 在此添加命令处理程序代码
+		if(this->isClip == TRUE){
+			this->isClip = FALSE;
+		}else{
+			this->isClip = TRUE;
+		}
+	}
+
+
+
+	void COOPHSExeView::OnUpdateButton32782(CCmdUI *pCmdUI)
+	{
+		// TODO: 在此添加命令更新用户界面处理程序代码
+		pCmdUI->SetCheck(isClip == TRUE);
+
+	}

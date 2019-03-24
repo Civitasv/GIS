@@ -10,5 +10,7 @@ public:
 	void addPoint(CPoint pt);
 	//int getSize(void);
 	void draw(CDC* pDC);
+	void floodFillPolygon(CDC *pDC);
+	CArray<CPoint ,CPoint > seeds;
 };
 

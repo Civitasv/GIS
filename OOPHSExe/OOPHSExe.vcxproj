@@ -101,6 +101,13 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CApplication.h" />
+    <ClInclude Include="CRange.h" />
+    <ClInclude Include="CWorkbook.h" />
+    <ClInclude Include="CWorkbooks.h" />
+    <ClInclude Include="CWorksheet.h" />
+    <ClInclude Include="CWorksheets.h" />
+    <ClInclude Include="Excel.h" />
     <ClInclude Include="GeoAnno.h" />
     <ClInclude Include="GeoLayer.h" />
     <ClInclude Include="GeoMap.h" />
@@ -117,6 +124,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Excel.cpp" />
     <ClCompile Include="GeoAnno.cpp" />
     <ClCompile Include="GeoLayer.cpp" />
     <ClCompile Include="GeoMap.cpp" />

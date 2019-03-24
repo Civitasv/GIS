@@ -1,4 +1,7 @@
-﻿  OOPHSExeView.cpp
-e:\cworkspace\oophsexe\oophsexe\oophsexeview.cpp(247): warning C4244: “=”: 从“double”转换到“LONG”，可能丢失数据
-e:\cworkspace\oophsexe\oophsexe\oophsexeview.cpp(312): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+﻿  GeoPolyline.cpp
+e:\cworkspace\oophsexe\oophsexe\geopolyline.cpp(62): warning C4244: “初始化”: 从“LONG”转换到“float”，可能丢失数据
+e:\cworkspace\oophsexe\oophsexe\geopolyline.cpp(63): warning C4244: “初始化”: 从“LONG”转换到“float”，可能丢失数据
+e:\cworkspace\oophsexe\oophsexe\geopolyline.cpp(64): warning C4244: “初始化”: 从“LONG”转换到“float”，可能丢失数据
+e:\cworkspace\oophsexe\oophsexe\geopolyline.cpp(65): warning C4244: “初始化”: 从“LONG”转换到“float”，可能丢失数据
+e:\cworkspace\oophsexe\oophsexe\geopolyline.cpp(70): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
   OOPHSExe.vcxproj -> E:\cworkspace\OOPHSExe\Debug\OOPHSExe.exe

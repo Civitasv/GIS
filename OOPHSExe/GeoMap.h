@@ -10,7 +10,7 @@ private:
 	const int mapScale;
 	//µØÍ¼·¶Î§
 	CRect crRect;
-
+	
 public:
 	CGeoMap(void);
 	virtual ~CGeoMap(void);
@@ -18,6 +18,8 @@ public:
 	CString getName();
 	//µØÍ¼°üº¬Í¼²ã
 	CArray<CGeoLayer *,CGeoLayer *> geoLayers;
+	//²ÃÇÐ·¶Î§
+	CRect clipRect;
 	/*void setGeoLayers(CArray<CGeoLayer *,CGeoLayer *> geoLayers);
 	CArray<CGeoLayer *,CGeoLayer *> getGeoLayers();*/
 
@@ -30,6 +32,8 @@ public:
 	void deleteLayerAll();
 	void setLayerVisible(CString layerName,bool isVisible);
 	void draw(CDC *pDC);
+	//¸ø¶¨¾ØÐÎ£¬²ÃÇÐÍ¼ÐÎ
+	void clipMap(CRect clipRect1);
 	CGeoLayer* getLayerByName(CString layerName); 
 };
 

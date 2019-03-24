@@ -61,3 +61,7 @@ void CGeoObject::draw(CDC *pDC){
 	
 }
 
+void CGeoObject::clipObj(CRect wcRect1){
+
+}
+

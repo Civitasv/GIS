@@ -90,7 +90,13 @@ void CGeoLayer::draw2(CDC *pDC){
 		geoPoints.GetAt(i)->draw(pDC);
 }*/
 void CGeoLayer::draw3(CDC *pDC){
+	int x = geoObjects.GetSize();
 	for(int i=0;i<geoObjects.GetSize();i++)
 		geoObjects.GetAt(i)->draw(pDC);
+}
+
+void CGeoLayer::clipLayer(CRect clipRect1){
+ 	for(int i=0;i<geoObjects.GetSize();i++)
+		geoObjects.GetAt(i)->clipObj(clipRect1);
 }
 

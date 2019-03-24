@@ -4,6 +4,7 @@
 
 CGeoAnno::CGeoAnno(void)
 {
+
 }
 
 
@@ -11,25 +12,21 @@ CGeoAnno::~CGeoAnno(void)
 {
 }
 
-void CGeoAnno::addPoint(CPoint pt)
-{
-	pts.Add(pt);
-}
-
 /*int CGeoPolyline::getSize(void)
 {
-	return 0;
+return 0;
 }*/
 
 
 void CGeoAnno::draw(CDC* pDC)
 {
-	int size = pts.GetSize();
-	for(int i=0;i<size;i++)
-	{
-		if(i==0)
-			pDC->MoveTo(pts[i]);
-		else
-			pDC->LineTo(pts[i]);
-	}
+	CFont font;
+	font.CreatePointFont(300000,CString("华文行楷"),NULL);
+	pDC->SelectObject(&font);
+	//设置背景透明
+	pDC->SetBkMode(TRANSPARENT);
+	pDC->TextOut(point.x, point.y, annoName);//输出字符串StringData    
+	CSize sz = pDC->GetTextExtent(annoName);
+	SetCaretPos(point.x+sz.cx,point.y-sz.cy);
+	//pDC->SelectObject( pOldFont );
 }

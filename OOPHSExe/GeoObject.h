@@ -33,5 +33,6 @@ public:
 	
 	void setType(int type);
 	int getType();
+	virtual void clipObj(CRect wcRect1);
 };
 

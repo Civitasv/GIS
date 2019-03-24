@@ -9,6 +9,8 @@ public:
 	void setPoint(CPoint pt);
 	CPoint getPoint();
 	void draw(CDC *pDC);
+	//ÔËËã·ûÖØÔØ
+	//CGeoPoint operator++(int);
 private:
 	//µã
 	CPoint pt;

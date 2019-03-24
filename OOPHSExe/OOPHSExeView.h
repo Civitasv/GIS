@@ -35,9 +35,23 @@ public:
 	//引入地图实例对象
 	CGeoMap *map;
 	bool isMaploaded;
+	CPoint ptOrg;	//起始点
+	CPoint ptEnd;	//结束点
+	bool isMousePressed;
+	bool isZoomIn;
+	bool isReturn;
+	bool isSelecting;
+	bool isClip;
+	CRect wcRect;
 	//CGeoMap map2;
 	virtual ~COOPHSExeView();
-	void readOPT();
+	void readOPT();	//读取颜色文件
+	void readAnno(); //读取注记文件
+	void readChina(FILE *fp); 
+	void readWuhan(FILE *fp);
+	void readCHN(FILE *fp);
+	void readClip(FILE *fp);
+	void convertColor(int color,CGeoObject *obj);
 #ifdef _DEBUG
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;
@@ -50,6 +64,17 @@ protected:
 public:
 	afx_msg void OnFileOpen();
 	virtual void OnPrepareDC(CDC* pDC, CPrintInfo* pInfo = NULL);
+	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
+	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnButton32777();
+	afx_msg void OnButton32779();
+	afx_msg void OnUpdateButton32777(CCmdUI *pCmdUI);
+	afx_msg void OnUpdateButton32779(CCmdUI *pCmdUI);
+	afx_msg void OnButton32780();
+	afx_msg void OnUpdateButton32780(CCmdUI *pCmdUI);
+	afx_msg void OnButton32782();
+	afx_msg void OnUpdateButton32782(CCmdUI *pCmdUI);
 };
 
 #ifndef _DEBUG  // OOPHSExeView.cpp 中的调试版本

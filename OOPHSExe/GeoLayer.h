@@ -50,6 +50,6 @@ public:
 	//void draw(CDC *pDC);
 	//void draw2(CDC *pDC);
 	void draw3(CDC *pDC);
-
+	void clipLayer(CRect clipRect1);
 };
 
